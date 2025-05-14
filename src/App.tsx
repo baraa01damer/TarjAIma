@@ -1,34 +1,42 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import ChatGPTLogo from './assets/OpenAI-white-monoblossom.svg'
 import './App.css'
+import { useState } from 'react';
+import { languages } from './constants/languages';
 
 function App() {
-  const onClick = () => {
-    chrome.tabs.create({ url: 'https://www.google.com' });
-  }
+  const [search, setSearch] = useState('');
+  const filteredLanguages = languages.filter(lang =>
+    lang.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
       <div className="flex justify-center">
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a href="https://chatgpt.com/" target="_blank">
+          <img src={ChatGPTLogo} className="logo chatgpt" alt="ChatGPT logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Translator</h1>
       <div className="card">
-        <button onClick={onClick}>
-          Go to Google
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <div className="flex flex-col items-center gap-2">
+          {/* Search Box */}
+          <input
+            type="text"
+            placeholder="Search language..."
+            className="border rounded p-2 mb-2"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+          {/* Language Dropdown */}
+          <select className="border rounded p-2 w-64">
+            {filteredLanguages.map(lang => (
+              <option key={lang.code} value={lang.code}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
