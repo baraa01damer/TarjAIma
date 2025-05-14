@@ -1,4 +1,3 @@
-// src/constants/languages.ts
 export const languages = [
     { code: "af", name: "Afrikaans" },
     { code: "sq", name: "Albanian" },
