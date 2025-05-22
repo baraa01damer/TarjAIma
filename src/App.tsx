@@ -1,30 +1,39 @@
+// Importing logo images and styles
 import logo from './assets/logo_icon.png'
 import logo_name from './assets/logo_name.png'
 import './App.css'
+// Importing React hooks and language constants
 import { useState, useRef, useEffect } from 'react';
 import { languages } from './constants/languages';
 
 function App() {
+  // State for search input, selected language, and dropdown visibility
   const [search, setSearch] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('auto');
   const [showDropdown, setShowDropdown] = useState(false);
+  // Ref for the dropdown to detect outside clicks
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Filter languages based on search input
   const filteredLanguages = languages.filter(lang =>
     lang.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Effect to handle closing dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      // If click is outside the dropdown, close it
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside);
+    // Cleanup event listener on unmount
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Handle selecting a language from the dropdown
   const handleLanguageSelect = (code: string, name: string) => {
     setSelectedLanguage(code);
     setSearch(name);
@@ -33,6 +42,7 @@ function App() {
 
   return (
     <>
+      {/* Logo and GitHub link */}
       <div className="flex justify-center">
         <a href="https://github.com/baraa01damer/TarjAIma" target="_blank">
           <img
@@ -42,6 +52,7 @@ function App() {
           />
         </a>
       </div>
+      {/* Logo name image */}
       <img
         src={logo_name}
         alt="TarjAIma Logo"
@@ -64,11 +75,11 @@ function App() {
             />
             {/* Autocomplete Dropdown */}
             {showDropdown && filteredLanguages.length > 0 && (
-              <div className="absolute z-10 w-full bg-white border rounded-md shadow-lg max-h-60 overflow-auto">
+              <div className="absolute z-10 w-full bg-gray border rounded-md shadow-lg max-h-60 overflow-auto">
                 {filteredLanguages.map(lang => (
                   <div
                     key={lang.code}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-black cursor-pointer"
                     onClick={() => handleLanguageSelect(lang.code, lang.name)}
                   >
                     {lang.name}
